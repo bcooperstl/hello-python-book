@@ -8,10 +8,33 @@ caves = []
 for i in cave_numbers:
     caves.append([])
 
+unvisited_caves = list(range(0,20))
+visited_caves = [0]
+unvisited_caves.remove(0)
+
+while unvisited_caves != []:
+    i = choice(visited_caves)
+    if len(caves[i]) >= 3:
+        continue
+    
+    next_cave = choice(unvisited_caves)
+    caves[i].append(next_cave)
+    caves[next_cave].append(i)
+    visited_caves.append(next_cave)
+    unvisited_caves.remove(next_cave)
+    
+    for number in cave_numbers:
+        print(number, ":", caves[number])
+    print('----------')
+
 for i in cave_numbers:
-    for j in range(3):
+    while (len(caves[i]) < 3):
         passage_to = choice(cave_numbers)
         caves[i].append(passage_to)
+        
+    for number in cave_numbers:
+        print(number, ":", caves[number])
+    print('----------')
 
 print(caves)
 
