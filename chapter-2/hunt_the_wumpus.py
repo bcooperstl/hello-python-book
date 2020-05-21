@@ -59,10 +59,9 @@ def print_location(player_location):
     if wumpus_friend_location in caves[player_location]:
         print("I smell another wumpus!")
 
-def get_next_location():
-    """ Get teh player's next location """
-    print("Which cave next?")
-    player_input = input("> ")
+def ask_for_cave():
+    """ Ask the player to choose a cave from their current location."""
+    player_input = input("Which cave? > ")
     if (not player_input.isdigit() or
         int(player_input) not in caves[player_location]):
         print(player_input+"?")
@@ -71,6 +70,41 @@ def get_next_location():
     else:
         return int(player_input)
 
+def get_action():
+    """ Find out what a player wants to do next."""
+    print("What do you do next?")
+    print("  m) move")
+    print("  a) fire an arror")
+    action = input("> ")
+    if action == "m" or action == "a":
+        return action
+    else:
+        print(action, "?")
+        print("That's not an action that I know about")
+        return None
+
+def do_movement():
+    print("Moving...")
+    new_location = ask_for_cave()
+    if new_location is None:
+        return player_location
+    else:
+        return new_location
+
+def do_shooting():
+    print("Firing...")
+    shoot_at = ask_for_cave()
+    if shoot_at is None:
+        return False
+    if shoot_at == wumpus_location or shoot_at == wumpus_friend_location:
+        print("Twang ... Aargh! You should a wumpus")
+        print("Well done, mighty wumpus hunter!")
+    else:
+        print("Twang ... clatter, clatter!")
+        print("You wasted yoru arrow!")
+        print("Empty handed, you begin the long trek back to your village")
+    return True
+    
 cave_numbers = range(0,20)
 unvisited_caves = list(range(0,20))
 visited_caves = []
@@ -100,12 +134,20 @@ print("of the cave you wish to enter next")
 
 while True:
     print_location(player_location)
-    new_location = get_next_location()
-    if new_location is not None:
-        player_location = new_location
-    if player_location == wumpus_location:
-        print("Aargh! You got eaten by a wumpus!")
-        break
-    if player_location == wumpus_friend_location:
-        print("Aargh! You got eaten by the wumpus' friend!")
-        break
+    
+    action = get_action()
+    if action is None:
+        continue
+    
+    if action == "m":
+        player_location = do_movement()
+        if player_location == wumpus_location:
+            print("Aargh! You got eaten by a wumpus!")
+            break
+        if player_location == wumpus_friend_location:
+            print("Aargh! You got eaten by the wumpus' friend!")
+            break
+    if action == "a":
+        game_over = do_shooting()
+        if game_over:
+            break
