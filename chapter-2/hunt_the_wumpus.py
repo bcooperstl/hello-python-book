@@ -2,6 +2,11 @@
 
 from random import choice
 
+cave_names = [ "Arched cavern", "Twisty passages", "Dripping cave", "Dusty crawlspace", "Underground lake",
+               "Black pit", "Fallen cave", "Shallow pool", "Icy underground river", "Sandy hollow",
+               "Old firepit", "Tree root cave", "Narrow ledge", "Winding steps", "Echoing chamber",
+               "Musty cave", "Gloomy cave", "Low ceilinged cave", "Wumpus lair", "Sppoky Chasm" ]
+
 def create_tunnel(cave_from, cave_to):
     """ Create a tunner from cave_from and cave_to """
     caves[cave_from].append(cave_to)
@@ -52,8 +57,10 @@ def finish_caves():
 
 def print_location(player_location):
     """ Tell the player about where they are """
-    print("You are in cave", player_location)
-    print("From here, you can see caves:", caves[player_location])
+    print("You are in cave", cave_names[player_location])
+    print("From here, you can see caves:")
+    for tunnel in range(0,3):
+        print("   ", tunnel+1, "-", cave_names[caves[player_location][tunnel]])
     if wumpus_location in caves[player_location]:
         print("I smell a wumpus!")
     if wumpus_friend_location in caves[player_location]:
@@ -62,13 +69,14 @@ def print_location(player_location):
 def ask_for_cave():
     """ Ask the player to choose a cave from their current location."""
     player_input = input("Which cave? > ")
-    if (not player_input.isdigit() or
-        int(player_input) not in caves[player_location]):
+    if player_input in ['1', '2', '3']:
+        index = int(player_input) - 1
+        cave_number = caves[player_location][index]
+        return cave_number
+    else:
         print(player_input+"?")
         print("That's not a direction that I can see!")
         return None
-    else:
-        return int(player_input)
 
 def get_action():
     """ Find out what a player wants to do next."""
