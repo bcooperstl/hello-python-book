@@ -44,17 +44,28 @@ print()
 
 dir1_file_list, dir1_root = directory_listing(directory1)
 dir2_file_list, dir2_root = directory_listing(directory2)
+results = {}
 
 for file_path in dir2_file_list.keys():
     if file_path not in dir1_file_list:
-        print(file_path, "not found in", directory1)
+        results[file_path]="not found in "+ directory1
     else:
-        print(file_path, "found in", directory1, "and", directory2)
         filename1=os.path.join(dir1_root, file_path)
         filename2=os.path.join(dir2_root, file_path)
         if md5(filename1) != md5(filename2):
-            print("\t",filename1,"and",filename2,"differ!")
-        del dir1_file_list[file_path]
+            results[file_path]="different between"+directory1+" and "+directory2
+        else:
+            results[file_path]="same in both directories"
+
 for file_path in dir1_file_list.keys():
-    print(file_path,"not found in",directory2)
+    if file_path not in results:
+        results[file_path]="not found in "+ directory2
+
+for file_path, result in sorted(results.items()):
+    if os.path.sep not in file_path and "same" not in result:
+        print(file_path, result)
+
+for path, result in sorted(results.items()):
+    if os.path.sep in path and "same" not in result:
+        print(path, result)
 
