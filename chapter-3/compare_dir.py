@@ -6,6 +6,8 @@ import hashlib
 
 def md5(file_path):
     """ return the md5sum of a file """
+    if os.path.isdir(file_path):
+        return '1'
     read_file = open(file_path,"rb")
     the_hash = hashlib.md5()
     the_hash.update(read_file.read())
@@ -26,7 +28,7 @@ def directory_listing(dir_name):
         trimmed_path=path[dir_trim:]
         if trimmed_path.startswith(os.path.sep):
             trimmed_path=trimmed_path[1:] #strip off the leading /
-        for each_file in files:
+        for each_file in files + dirs:
             file_path=os.path.join(trimmed_path,each_file)
             dir_file_list[file_path]=True
     return (dir_file_list, dir_root)
