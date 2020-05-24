@@ -6,6 +6,16 @@ def create_todo(todos, title, description, level):
             'level' : level }
     todos.append(todo)
 
+def show_todos(todos):
+    output = ("Item    Title           "
+              "Description             Level\n")
+    for index, todo in enumerate(todos):
+        line = str(index+1).ljust(8)
+        for key, length in [('title', 16), ('description', 24), ('level', 16)]:
+            line += str(todo[key]).ljust(length)
+        output+=line+"\n"
+    return output
+    
 def test(todos, abcd, ijkl):
     return "Command 'test' returned:\n" + \
     "abcd: " + abcd + "\nijkl: " + ijkl
@@ -46,6 +56,7 @@ def run_command(user_input, data=None):
 
 commands = {
     'new' : {'function' : create_todo, 'fields' : ['title', 'description', 'level']},
+    'show' : {'function' : show_todos, 'fields' : []},
     'test' : {'function' : test, 'fields' : ['abcd', 'ijkl']},
     }
 

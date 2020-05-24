@@ -32,9 +32,33 @@ def test_create_todo():
     
     print("OK - create_todo")
 
-
+def test_show_todos():
+    todo.todos = [
+        { 'title' : 'test todo',
+          'description' : 'This is a test',
+          'level' : 'Important'
+        }
+    ]
+    result = todo.show_todos(todo.todos)
+    lines = result.split("\n")
+    
+    title_line = lines[0]
+    assert "Item" in title_line
+    assert "Title" in title_line
+    assert "Description" in title_line
+    assert "Level" in title_line
+    
+    values_line = lines[1]
+    assert "1" in values_line
+    assert "test todo" in values_line
+    assert "This is a test" in values_line
+    assert "Important" in values_line
+    
+    print("OK - show_todos")
+    
 
 test_get_function()
 test_get_fields()
 test_run_command()
 test_create_todo()
+test_show_todos()
