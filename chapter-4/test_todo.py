@@ -52,13 +52,41 @@ def test_show_todos():
     assert "1" in values_line
     assert "test todo" in values_line
     assert "This is a test" in values_line
-    assert "Important" in values_line
+    assert "IMPORTANT" in values_line
+    
+    print(result)
     
     print("OK - show_todos")
     
-
+def test_todo_sort_order():
+    todo.todos = [
+        { 'title' : 'test unimportant todo',
+          'description' : 'An unimportant test',
+          'level' : 'Unimportant'
+        },
+        { 'title' : 'test medium todo',
+          'description' : 'A medium test',
+          'level' : 'Medium'
+        },
+        { 'title' : 'test important todo',
+          'description' : 'An important test',
+          'level' : 'Important'
+        },
+    ]
+    result = todo.show_todos(todo.todos)
+    lines = result.split("\n")
+    
+    assert "IMPORTANT" in lines[1]
+    assert "Medium" in lines[2]
+    assert "Unimportant" in lines[3]
+    
+    print(result)
+    
+    print("OK - todo_sort_order")
+    
 test_get_function()
 test_get_fields()
 test_run_command()
 test_create_todo()
 test_show_todos()
+test_todo_sort_order()

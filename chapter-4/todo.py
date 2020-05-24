@@ -6,10 +6,21 @@ def create_todo(todos, title, description, level):
             'level' : level }
     todos.append(todo)
 
+def capitalize_level(todo):
+    todo['level'] = todo['level'].upper()
+    return todo
+
 def show_todos(todos):
+    important = [capitalize_level(todo) for todo in todos
+                 if todo['level'].lower() == 'important']
+    unimportant = [todo for todo in todos
+                   if todo['level'].lower() == 'unimportant']
+    medium = [todo for todo in todos
+              if todo['level'].lower() not in ['important', 'unimportant']]
+    sorted_todos = (important + medium + unimportant)
     output = ("Item    Title           "
               "Description             Level\n")
-    for index, todo in enumerate(todos):
+    for index, todo in enumerate(sorted_todos):
         line = str(index+1).ljust(8)
         for key, length in [('title', 16), ('description', 24), ('level', 16)]:
             line += str(todo[key]).ljust(length)
