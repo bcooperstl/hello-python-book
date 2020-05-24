@@ -22,10 +22,13 @@ def main_loop():
             break;
 
 def get_function(command_name):
-    return commands[command_name]
+    return commands[command_name]['function']
+
+def get_fields(command_name):
+    return commands[command_name]['fields']
 
 commands = {
-    'new' : create_todo
+    'new' : {'function' : create_todo, 'fields' : ['title', 'description', 'level']}
     }
 
 if __name__ == '__main__':
