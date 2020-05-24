@@ -2,6 +2,10 @@
 
 import todo
 
+def test_get_function():
+    assert todo.get_function('new') == todo.create_todo
+    print("OK - get_function")
+
 def test_create_todo():
     todo.todos = []
     todo.create_todo(todo.todos,
@@ -16,4 +20,5 @@ def test_create_todo():
     
     print("OK - create todo")
 
+test_get_function()
 test_create_todo()

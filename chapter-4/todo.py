@@ -21,6 +21,13 @@ def main_loop():
             print("Exiting...")
             break;
 
+def get_function(command_name):
+    return commands[command_name]
+
+commands = {
+    'new' : create_todo
+    }
+
 if __name__ == '__main__':
     main_loop()
 
