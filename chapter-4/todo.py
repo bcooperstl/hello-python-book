@@ -9,6 +9,8 @@ def create_todo(todos, title, description, level):
             'description' : description,
             'level' : level }
     todos.append(todo)
+    sort_todos()
+    return "Created '%s'." % title
 
 def capitalize_level(todo):
     todo['level'] = todo['level'].upper()
@@ -38,7 +40,8 @@ def show_todo(todo, index):
         output += "\n"
     return output
 
-def sort_todos(todos):
+def sort_todos():
+    global todos
     important = [capitalize_level(todo) for todo in todos
                  if todo['level'].lower() == 'important']
     unimportant = [todo for todo in todos
@@ -46,13 +49,11 @@ def sort_todos(todos):
     medium = [todo for todo in todos
               if todo['level'].lower() not in ['important', 'unimportant']]
     todos = (important + medium + unimportant)
-    return todos
     
 def show_todos(todos):
     output = ("Item      Title             "
               "Description               Level\n")
-    sorted_todos = sort_todos(todos)
-    for index, todo in enumerate(sorted_todos):
+    for index, todo in enumerate(todos):
         output += show_todo(todo, index)
     return output
 
@@ -80,12 +81,14 @@ def get_input(fields):
 
 def main_loop():
     user_input = ""
+    load_todo_list()
     while 1:
         print(run_command(user_input))
         user_input = input("> ")
         if user_input.lower().startswith("quit"):
             print("Exiting...")
             break;
+    save_todo_list()
 
 def get_function(command_name):
     return commands[command_name]['function']

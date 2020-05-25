@@ -29,7 +29,7 @@ def test_create_todo():
     assert len(todo.todos) == 1, "Todo was not created!"
     assert todo.todos[0]['title'] == "Make some stuff"
     assert todo.todos[0]['description'] == "Stuff needs to be programmed"
-    assert todo.todos[0]['level'] == "Important"
+    assert todo.todos[0]['level'] == "IMPORTANT"
     
     print("OK - create_todo")
 
@@ -40,6 +40,7 @@ def test_show_todos():
           'level' : 'Important'
         }
     ]
+    todo.sort_todos()
     result = todo.show_todos(todo.todos)
     print(result)
 
@@ -74,6 +75,7 @@ def test_todo_sort_order():
           'level' : 'Important'
         },
     ]
+    todo.sort_todos()
     result = todo.show_todos(todo.todos)
     print(result)
 
@@ -82,8 +84,7 @@ def test_todo_sort_order():
     assert "IMPORTANT" in lines[1]
     assert "Medium" in lines[3]
     assert "Unimportant" in lines[4]
-    
-    
+        
     print("OK - todo_sort_order")
     
 def test_todo_wrap_long_lines():
@@ -118,6 +119,29 @@ def test_todo_wrap_long_lines():
     
     print("OK - todo_wrap_long_lines")
 
+def test_todo_sort_after_creation():
+    todo.todos = [
+        { 'title' : 'test unimportant todo',
+          'description' : 'An unimportant test',
+          'level' : 'Unimportant'
+        },
+        { 'title' : 'test medium todo',
+          'description' : 'A medium test',
+          'level' : 'Medium'
+        },
+    ]
+    todo.create_todo(todo.todos,
+        title='Make some stuff',
+        description='Stuff needs to be programmed',
+        level='Important')
+
+    assert todo.todos[0]['level']=="IMPORTANT"
+    assert todo.todos[1]['level']=="Medium"
+    assert todo.todos[2]['level']=="Unimportant"
+        
+    print("OK - todo_sort_after_creation")
+
+
 def test_save_load_todo_list():
     todos_original = [ 
       { 'title' : 'test dodo',
@@ -143,5 +167,6 @@ test_run_command()
 test_create_todo()
 test_show_todos()
 test_todo_sort_order()
+test_todo_sort_after_creation()
 test_todo_wrap_long_lines()
 test_save_load_todo_list()
