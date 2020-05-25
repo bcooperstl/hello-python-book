@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import todo
+import os
 
 def test_get_function():
     assert todo.get_function('new') == todo.create_todo
@@ -116,7 +117,25 @@ def test_todo_wrap_long_lines():
     assert 'program.' in lines[7]
     
     print("OK - todo_wrap_long_lines")
+
+def test_save_load_todo_list():
+    todos_original = [ 
+      { 'title' : 'test dodo',
+        'description' : 'This is a test',
+        'level' : 'Important'
+      }
+    ]
+    todo.todos = todos_original
+    assert "todos.json" not in os.listdir('.')
     
+    todo.save_todo_list()
+    assert "todos.json" in os.listdir('.')
+    
+    todo.load_todo_list()
+    assert todo.todos == todos_original
+    os.unlink("todos.json")
+    print("OK - save_load_todo_list")
+
 
 test_get_function()
 test_get_fields()
@@ -125,3 +144,4 @@ test_create_todo()
 test_show_todos()
 test_todo_sort_order()
 test_todo_wrap_long_lines()
+test_save_load_todo_list()

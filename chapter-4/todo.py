@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 import textwrap
+import os
+import json
 
 def create_todo(todos, title, description, level):
     todo = {'title' : title,
@@ -53,7 +55,19 @@ def show_todos(todos):
     for index, todo in enumerate(sorted_todos):
         output += show_todo(todo, index)
     return output
-    
+
+def save_todo_list():
+    save_file = open("todos.json", "w")
+    json.dump(todos, save_file)
+    save_file.close()
+
+def load_todo_list():
+    global todos
+    if os.access("todos.json", os.F_OK):
+        load_file = open("todos.json", "r")
+        todos = json.load(load_file)
+        load_file.close()
+
 def test(todos, abcd, ijkl):
     return "Command 'test' returned:\n" + \
     "abcd: " + abcd + "\nijkl: " + ijkl
