@@ -141,6 +141,43 @@ def test_todo_sort_after_creation():
         
     print("OK - todo_sort_after_creation")
 
+def test_delete_todo():
+    todo.todos = [
+        { 'title' : 'test important todo',
+          'description' : 'An important test',
+          'level' : 'IMPORTANT'
+        },
+        { 'title' : 'test medium todo',
+          'description' : 'A medium test',
+          'level' : 'Medium'
+        },
+        { 'title' : 'test unimportant todo',
+          'description' : 'An unimportant test',
+          'level' : 'Unimportant'
+        },
+    ]
+    
+    response = todo.delete_todo(todo.todos, which="2")
+    
+    assert response == "Deleted todo #2"
+    assert len(todo.todos) == 2
+    assert todo.todos[0]['level']=="IMPORTANT"
+    assert todo.todos[1]['level']=="Unimportant"
+    print("OK - delete_todo")
+
+def test_delete_todo_failure():
+    todo.todos = [
+        { 'title' : 'test important todo',
+          'description' : 'An important test',
+          'level' : 'IMPORTANT'
+        },
+    ]
+    
+    for bad_input in ['', 'foo', '0', '42']:
+        response = todo.delete_todo(todo.todos, which=bad_input)
+        assert response == ("'" + bad_input + "' needs to be the number of a todo!")
+        assert len(todo.todos) == 1
+    print("OK - delete_todo_failure")
 
 def test_save_load_todo_list():
     todos_original = [ 
@@ -170,3 +207,5 @@ test_todo_sort_order()
 test_todo_sort_after_creation()
 test_todo_wrap_long_lines()
 test_save_load_todo_list()
+test_delete_todo()
+test_delete_todo_failure()
