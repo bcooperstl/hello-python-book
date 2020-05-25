@@ -21,6 +21,22 @@ def delete_todo(todos, which):
     del todos[which-1]
     return "Deleted todo #" + str(which)
 
+def edit_todo(todos, which, title, description, level):
+    if not which.isdigit():
+        return ("'" + which + "' needs to be the number of a todo!")
+    which = int(which)
+    if which < 1 or which > len(todos):
+        return ("'" + str(which) + "' needs to be the number of a todo!")
+    todo = todos[which-1]
+    if title != "":
+        todo['title']=title
+    if description != "":
+        todo['description']=description
+    if level != "":
+        todo['level']=level
+    sort_todos()
+    return "Edited todo #" + str(which)
+
 def capitalize_level(todo):
     todo['level'] = todo['level'].upper()
     return todo
@@ -121,6 +137,7 @@ def run_command(user_input, data=None):
 commands = {
     'new' : {'function' : create_todo, 'fields' : ['title', 'description', 'level']},
     'delete' : {'function' : delete_todo, 'fields' : ['which']},
+    'edit' : {'function' : edit_todo, 'fields' : ['which', 'title', 'description' 'level']},
     'show' : {'function' : show_todos, 'fields' : []},
     'test' : {'function' : test, 'fields' : ['abcd', 'ijkl']},
     }

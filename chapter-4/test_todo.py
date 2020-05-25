@@ -179,6 +179,52 @@ def test_delete_todo_failure():
         assert len(todo.todos) == 1
     print("OK - delete_todo_failure")
 
+def test_edit_todo():
+    todo.todos = [
+        { 'title' : 'Make some stuff',
+          'description' : 'This is an important test',
+          'level' : 'IMPORTANT'
+        },
+    ]
+    
+    response = todo.edit_todo(todo.todos,
+        which="1",
+        title="",
+        description="Stuff needs to be programmed properly",
+        level="")
+    
+    assert response == "Edited todo #1"
+    assert len(todo.todos) == 1
+    assert todo.todos[0]['title'] == 'Make some stuff'
+    assert todo.todos[0]['description'] == "Stuff needs to be programmed properly"
+    assert todo.todos[0]['level'] == 'IMPORTANT'
+    print("OK - edit_todo")
+
+def test_edit_todo_importance():
+    todo.todos = [
+        { 'title' : 'Test medium todo',
+          'description' : 'This is a medium todo',
+          'level' : 'medium'
+        },
+        { 'title' : 'Test another medium todo',
+          'description' : 'This is another medium todo',
+          'level' : 'IMPORTANT'
+        },
+    ]
+    
+    response = todo.edit_todo(todo.todos,
+        which="2",
+        title="",
+        description="This is now an important todo",
+        level="Important")
+    
+    assert response == "Edited todo #2"
+    assert len(todo.todos) == 2
+    assert todo.todos[0]['description'] == "This is now an important todo"
+    assert todo.todos[0]['level'] == 'IMPORTANT'
+    assert todo.todos[1]['level'] == 'medium'
+    print("OK - edit_todo_importance")
+
 def test_save_load_todo_list():
     todos_original = [ 
       { 'title' : 'test dodo',
@@ -209,3 +255,5 @@ test_todo_wrap_long_lines()
 test_save_load_todo_list()
 test_delete_todo()
 test_delete_todo_failure()
+test_edit_todo()
+test_edit_todo_importance()
