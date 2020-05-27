@@ -14,6 +14,18 @@ class Cave(object):
         self.tunnels.append(cave)
         cave.tunnels.append(self)
     
+    def look(self, player, noun):
+        if noun == "":
+            result = [self.name, self.description]
+            if len(self.here) > 0:
+                result += ["Items here:"]
+                result += ["  "+x.name for x in self.here if 'name' in dir(x)]
+        else:
+            result = [noun + "? I can't see that."]
+        return result
+    
+    actions = ['look']
+    
     def __repr__(self):
         return "<Cave " + self.name + ">"
 

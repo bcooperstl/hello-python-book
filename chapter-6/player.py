@@ -34,14 +34,31 @@ class Player(object):
         if verb.lower() in self.actions:
             return getattr(self, verb)
         elif verb.lower() in self.location.actions:
-            return getattr(self,location, verb)
-    
-    def look(self, player, noun):
-        return [self.location.name, self.location.description]
+            return getattr(self.location, verb)
     
     def quit(self, player, noun):
         self.playing = False
         return ["bye bye!"]
     
-    actions = ['look', 'quit']
+    actions = ['quit']
+
+def test():
+    import cave
+    empty_cave = cave.Cave("Empty Cave", "A desolate, empty cave, waiting for someone to fill it.")
+    
+    import item
+    sword = item.Item("sword", "A pointy sword.", empty_cave)
+    coin = item.Item("coin", "A shiny gold goin. Your first piece of treasure!", empty_cave)
+    
+    player = Player(empty_cave)
+    
+    print(player.location.name)
+    print(player.location.description)
+    while player.playing:
+        input = player.get_input()
+        result = player.process_input(input)
+        print("\n".join(result))
+
+if __name__ == '__main__':
+    test()
 
