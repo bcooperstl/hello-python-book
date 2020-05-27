@@ -7,6 +7,7 @@ class Player(object):
         self.location = location
         self.location.here.append(self)
         self.playing = True
+        self.inventory = []
     
     def get_input(self):
         return input("> ")
@@ -27,7 +28,7 @@ class Player(object):
     
     def find_handler(self, verb, noun):
         if noun != "":
-            object = [x for x in self.location.here
+            object = [x for x in self.location.here + self.inventory
                       if x is not self and x.name == noun and verb in x.actions]
             if len(object) > 0:
                 return getattr(object[0], verb)
@@ -36,11 +37,26 @@ class Player(object):
         elif verb.lower() in self.location.actions:
             return getattr(self.location, verb)
     
+    def get(self, player, noun):
+        return [noun + "? I can't see that here."]
+    
+    def drop(self, player, noun):
+        return [noun + "? I don't have that."]
+    
+    def inv(self, player, noun):
+        result = []
+        if self.inventory:
+            result += ["You have: "]
+            result += ["  "+x.name for x in self.inventory]
+        else:
+            result += "You have nothing!"
+        return result
+    
     def quit(self, player, noun):
         self.playing = False
         return ["bye bye!"]
     
-    actions = ['quit']
+    actions = ['quit', 'inv', 'get', 'drop']
 
 def test():
     import cave
