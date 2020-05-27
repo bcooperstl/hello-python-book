@@ -49,7 +49,7 @@ class Player(object):
             result += ["You have: "]
             result += ["  "+x.name for x in self.inventory]
         else:
-            result += "You have nothing!"
+            result += ["You have nothing!"]
         return result
     
     def quit(self, player, noun):
@@ -58,23 +58,22 @@ class Player(object):
     
     actions = ['quit', 'inv', 'get', 'drop']
 
-def test():
+if __name__ == '__main__':
     import cave
-    empty_cave = cave.Cave("Empty Cave", "A desolate, empty cave, waiting for someone to fill it.")
+    caves = cave.create_caves()
+    
+    start_cave = caves[0]
+    #empty_cave = cave.Cave("Empty Cave", "A desolate, empty cave, waiting for someone to fill it.")
     
     import item
-    sword = item.Item("sword", "A pointy sword.", empty_cave)
-    coin = item.Item("coin", "A shiny gold goin. Your first piece of treasure!", empty_cave)
+    sword = item.Item("sword", "A pointy sword.", start_cave)
+    coin = item.Item("coin", "A shiny gold goin. Your first piece of treasure!", start_cave)
     
-    player = Player(empty_cave)
+    player = Player(start_cave)
     
-    print(player.location.name)
-    print(player.location.description)
+    print("\n".join(player.location.look(player, '')))
     while player.playing:
-        input = player.get_input()
-        result = player.process_input(input)
+        user_input = player.get_input()
+        result = player.process_input(user_input)
         print("\n".join(result))
-
-if __name__ == '__main__':
-    test()
 
