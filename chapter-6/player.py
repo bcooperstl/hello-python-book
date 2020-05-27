@@ -4,6 +4,8 @@ import shlex
 
 class Player(object):
     def __init__(self, location):
+        self.name = "Player"
+        self.description = "The Player"
         self.location = location
         self.location.here.append(self)
         self.playing = True
@@ -11,6 +13,9 @@ class Player(object):
     
     def get_input(self):
         return input("> ")
+    
+    def update(self):
+        self.result = self.process_input(self.input)
     
     def process_input(self, input):
         parts = shlex.split(input)
@@ -57,23 +62,3 @@ class Player(object):
         return ["bye bye!"]
     
     actions = ['quit', 'inv', 'get', 'drop']
-
-if __name__ == '__main__':
-    import cave
-    caves = cave.create_caves()
-    
-    start_cave = caves[0]
-    #empty_cave = cave.Cave("Empty Cave", "A desolate, empty cave, waiting for someone to fill it.")
-    
-    import item
-    sword = item.Item("sword", "A pointy sword.", start_cave)
-    coin = item.Item("coin", "A shiny gold goin. Your first piece of treasure!", start_cave)
-    
-    player = Player(start_cave)
-    
-    print("\n".join(player.location.look(player, '')))
-    while player.playing:
-        user_input = player.get_input()
-        result = player.process_input(user_input)
-        print("\n".join(result))
-

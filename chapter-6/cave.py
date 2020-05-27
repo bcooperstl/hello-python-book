@@ -3,8 +3,6 @@
 from random import choice, shuffle
 
 class Cave(object):
-    directions = {'north' : 'south', 'east' : 'west', 'south' : 'north', 'west' : 'east'}
-
     def __init__(self, name, description):
         self.name = name
         self.description = description
@@ -13,6 +11,8 @@ class Cave(object):
         for direction in self.directions.keys():
             self.tunnels[direction] = None
     
+    directions = {'north' : 'south', 'east' : 'west', 'south' : 'north', 'west' : 'east'}
+
     def exits(self):
         return [direction for direction, cave in self.tunnels.items() if cave is not None]
     
@@ -76,26 +76,3 @@ class Cave(object):
     
     def __repr__(self):
         return "<Cave " + self.name + ">"
-
-cave_names = [ "Arched cavern", "Twisty passages", "Dripping cave", "Dusty crawlspace", "Underground lake",
-               "Black pit", "Fallen cave", "Shallow pool", "Icy underground river", "Sandy hollow",
-               "Old firepit", "Tree root cave", "Narrow ledge", "Winding steps", "Echoing chamber",
-               "Musty cave", "Gloomy cave", "Low ceilinged cave", "Wumpus lair", "Sppoky Chasm" ]
-
-def create_caves():
-    shuffle(cave_names)
-    caves = [Cave(cave_names[0],cave_names[0])]
-    for name in cave_names[1:]:
-        new_cave = Cave(name, name)
-        eligible_caves = [cave for cave in caves
-                          if cave.can_tunnel_to()]
-        old_cave = choice(eligible_caves)
-        directions = [direction for direction, cave in old_cave.tunnels.items() if cave is None]
-        direction = choice(directions)
-        old_cave.tunnel_to(direction, new_cave)
-        caves.append(new_cave)
-    return caves
-
-if __name__ == '__main__':
-    for cave in create_caves():
-        print(cave.name,"=>",cave.tunnels)

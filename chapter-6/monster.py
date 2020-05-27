@@ -5,7 +5,7 @@ import player
 
 class Monster(player.Player):
     def __init__(self, location, name, description):
-        player.Player.__init(self, location)
+        player.Player.__init__(self, location)
         self.name = name
         self.description = description
     
